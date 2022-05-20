@@ -3,7 +3,8 @@ from unicodedata import name
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView, QTableWidget, QWidget, QPushButton, QFileDialog, QTableWidget
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QIcon
-from openpyxl import Workbook, load_workbook
+from openpyxl import Workbook
+from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
 
 class App(QMainWindow):
@@ -22,7 +23,7 @@ class App(QMainWindow):
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
-        self.statusBar().showMessage('Test App written in Python and QT')
+        self.statusBar().showMessage('Select master excel')
         self.setFixedSize(300,150)
         
         #Browse button
@@ -32,17 +33,13 @@ class App(QMainWindow):
         button.clicked.connect(self.openFileNameDialog)
         
         self.show()
-
-    # @pyqtSlot()
-    # def on_click(self):
-    #     print('browse works')
     
     
     #Open File Dialog Window
     def openFileNameDialog(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self,"Select Excel", "","Excel Files(*.xlsx)", options=options)
+        fileName, _ = QFileDialog.getOpenFileName(self,"Select Excel", "","Excel Files(*.xlsx)")
         workbook = Workbook()
         workbook = load_workbook(fileName)
         if fileName:
