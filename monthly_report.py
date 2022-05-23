@@ -108,24 +108,25 @@ class App(QMainWindow):
         
         destination_workbook = Workbook() #inst destination_workbook
         destination_workbook.save(desktop+full_name+'.xlsx') #create destination_workbook
+        destination_worksheet = destination_workbook.create_sheet()
         
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
         
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
-            if (iteration[0]==4):
-                print(iteration[0])
-            #verify date in the tuple and add it to a list? maybe
             
-            #write the list into the hardcoded new excel location?
-        
-        # newWorkbook = Workbook()
-        
-        # dest_filename = path to the new excel to be created in-> "c:\users\desktop\name.xlsx"
-        
-        # newWorkbook.save(fileName = dest_filename)
-    
+            # TODO : iterate through whole excel,
+            # TODO        if first_date true -> 
+            # TODO            if user_account true -> 
+            # TODO                add tuple to dict using the i as the key
+            
+            #? if (iteration[0]==4):
+            #?     print(iteration[0])
+            #? #verify date in the tuple and add it to a list? maybe
+            
+            #? write the list into the hardcoded new excel location?
+            pass
 
 
 
