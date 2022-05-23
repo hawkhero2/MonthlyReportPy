@@ -1,4 +1,5 @@
 import sys
+import json
 from unicodedata import name
 from PyQt5.QtWidgets import QApplication, QMainWindow, QTableView, QTableWidget, QWidget, QPushButton, QFileDialog, QTableWidget
 from PyQt5.QtCore import pyqtSlot
@@ -6,6 +7,7 @@ from PyQt5.QtGui import QIcon
 from openpyxl import Workbook
 from openpyxl import load_workbook
 from openpyxl.utils import get_column_letter
+from pkg_resources import working_set
 
 class App(QMainWindow):
     
@@ -34,16 +36,26 @@ class App(QMainWindow):
         
         self.show()
     
-    
     #Open File Dialog Window
     def openFileNameDialog(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
+        #Open File
+        # options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
         fileName, _ = QFileDialog.getOpenFileName(self,"Select Excel", "","Excel Files(*.xlsx)")
+        
+        #load_workbook from fileName
         workbook = Workbook()
         workbook = load_workbook(fileName)
-        if fileName:
-            print(workbook)
+        worksheet = workbook.active
+        for iteration in worksheet.iter_rows(min_row=1, max_col=2, values_only=True): #returns a tuple
+            if (iteration[0]==4):
+                print(iteration[0])
+            #verify date in the tuple and add it to a list? maybe
+            #write the list into the hardcoded new excel location?
+        # newWorkbook = Workbook()
+        # dest_filename = path to the new excel to be created in-> "c:\users\desktop\name.xlsx"
+        # newWorkbook.save(fileName = dest_filename)
+    
 
 
 
