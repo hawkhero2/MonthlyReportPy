@@ -1,4 +1,5 @@
 from distutils.command.build_scripts import first_line_re
+import os
 import sys
 import json
 from unicodedata import name
@@ -45,26 +46,26 @@ class App(QMainWindow):
         user_account.move(140,4)
         user_account.setText('Account')
         
-        # Create textbox name
-        self.textbox = QLineEdit(self)
-        self.textbox.move(20, 30)
-        self.textbox.resize(100,20)
+        # Create textbox full_name
+        self.full_name = QLineEdit(self)
+        self.full_name.move(20, 30)
+        self.full_name.resize(100,20)
         
         # Create textbox user_account
-        self.textbox = QLineEdit(self)
-        self.textbox.move(140, 30)
-        self.textbox.resize(100,20)
+        self.user_account = QLineEdit(self)
+        self.user_account.move(140, 30)
+        self.user_account.resize(100,20)
         
         # Create textbox first date
-        self.textbox = QLineEdit(self)
-        self.textbox.move(20, 100)
-        self.textbox.resize(100,20)
+        self.first_date = QLineEdit(self)
+        self.first_date.move(20, 100)
+        self.first_date.resize(100,20)
         
         
         # Create textbox last date
-        self.textbox = QLineEdit(self)
-        self.textbox.move(140, 100)
-        self.textbox.resize(100,20)
+        self.last_date = QLineEdit(self)
+        self.last_date.move(140, 100)
+        self.last_date.resize(100,20)
         
         #QLabel first date
         first_date = QLabel(self)
@@ -72,29 +73,57 @@ class App(QMainWindow):
         first_date.setText('First Date')
         
         #QLabel last date
-        first_date = QLabel(self)
-        first_date.move(140, 75)
-        first_date.setText('Last Date')
+        last_date = QLabel(self)
+        last_date.move(140, 75)
+        last_date.setText('Last Date')
+        
+        
+        test_button = QPushButton(self)
+        test_button.move(100,180)
+        test_button.clicked.connect(self.testButton)
+        
         
         self.show()
+    
+    #test_button
+    def testButton(self):
+        print(self.full_name.text(),
+              self.first_date.text(),
+              self.last_date.text(),
+              self.user_account.text()
+              )
+    
     
     #Open File Dialog Window
     def openFileNameDialog(self):
         
+        full_name = self.full_name.text()
+        first_date = self.first_date.text()
+        last_date = self.last_date.text()
+        user_account = self.user_account.text()
+        
+        desktop = os.path.expanduser("~/Desktop/") #path for current user desktop
+        
         fileName, _ = QFileDialog.getOpenFileName(self,"Select Excel", "","Excel Files(*.xlsx)") #Grab File
         
-        workbook = Workbook()
         destination_workbook = Workbook() #inst destination_workbook
-        # destination_workbook.save('c:/users/currentuser/desktop/'+operator_name+'.xlsx') #create destination_workbook
-        workbook = load_workbook(fileName) #load_workbook from fileName
-        worksheet = workbook.active
-        for iteration in worksheet.iter_rows(min_row=1, max_col=2, values_only=True): #returns a tuple
+        destination_workbook.save(desktop+full_name+'.xlsx') #create destination_workbook
+        
+        master_workbook = Workbook()
+        master_workbook = load_workbook(fileName) #load_workbook from fileName
+        
+        master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
+        for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
             if (iteration[0]==4):
                 print(iteration[0])
             #verify date in the tuple and add it to a list? maybe
+            
             #write the list into the hardcoded new excel location?
+        
         # newWorkbook = Workbook()
+        
         # dest_filename = path to the new excel to be created in-> "c:\users\desktop\name.xlsx"
+        
         # newWorkbook.save(fileName = dest_filename)
     
 
