@@ -22,6 +22,7 @@ class App(QMainWindow):
         self.width = 300
         self.height = 150
         
+        
         self.initUI()
 
     def initUI(self):
@@ -102,7 +103,7 @@ class App(QMainWindow):
         last_date = self.last_date.text()
         user_account = self.user_account.text()
         
-        desktop = os.path.expanduser("~/Desktop/") #path for current user desktop
+        desktop = os.path.expanduser("~\Desktop\\") #path for current user desktop
         
         fileName, _ = QFileDialog.getOpenFileName(self,"Select Excel", "","Excel Files(*.xlsx)") #Grab File
         
@@ -120,6 +121,7 @@ class App(QMainWindow):
             # TODO        if first_date true -> 
             # TODO            if user_account true -> 
             # TODO                add tuple to dict using the i as the key
+            # TODO      append dict to destination_worksheet
             
             #? if (iteration[0]==4):
             #?     print(iteration[0])
