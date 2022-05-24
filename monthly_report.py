@@ -3,8 +3,8 @@ import os
 import sys
 import json
 from unicodedata import name
-from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QTableView, QTableWidget, QWidget, QPushButton, QFileDialog, QTableWidget
-from PyQt5.QtCore import pyqtSlot
+import PyQt5
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QWidget, QPushButton, QFileDialog
 from PyQt5.QtGui import QIcon
 from openpyxl import Workbook
 from openpyxl import load_workbook
@@ -21,6 +21,7 @@ class App(QMainWindow):
         self.top = 100
         self.width = 300
         self.height = 150
+        self.setStyleSheet("background-color:#363636 ")
         
         
         self.initUI()
@@ -41,16 +42,23 @@ class App(QMainWindow):
         person_name = QLabel(self)
         person_name.move(20,4)
         person_name.setText('Full Name')
+        person_name.setStyleSheet("color: #cfcfcf;"
+                                   )
         
         #Qlabel account name
         user_account = QLabel(self)
         user_account.move(140,4)
         user_account.setText('Account')
+        user_account.setStyleSheet("color: #cfcfcf;"
+                                   )
         
         # Create textbox full_name
         self.full_name = QLineEdit(self)
         self.full_name.move(20, 30)
         self.full_name.resize(100,20)
+        self.full_name.setStyleSheet(""" 
+                                     background-color: grey
+                                     """)
         
         # Create textbox user_account
         self.user_account = QLineEdit(self)
@@ -72,17 +80,24 @@ class App(QMainWindow):
         first_date = QLabel(self)
         first_date.move(20, 75)
         first_date.setText('First Date')
+        first_date.setStyleSheet("""
+                                 color: #cfcfcf;
+                                 """)
         
         #QLabel last date
         last_date = QLabel(self)
         last_date.move(140, 75)
         last_date.setText('Last Date')
+        last_date.setStyleSheet("""
+                                color: #cfcfcf;
+                                
+                                """)
         
-        
-        test_button = QPushButton(self)
-        test_button.move(100,180)
+        #Test Button
+        test_button = QPushButton('Test Button', self)
+        test_button.move(140,180)
         test_button.clicked.connect(self.testButton)
-        
+        test_button.setStyleSheet("")
         
         self.show()
     
