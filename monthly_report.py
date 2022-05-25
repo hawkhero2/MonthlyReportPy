@@ -1,5 +1,6 @@
 from distutils.command.build_scripts import first_line_re
 import os
+import datetime
 import sys
 import json
 from unicodedata import name
@@ -12,6 +13,11 @@ from openpyxl.utils import get_column_letter
 from pkg_resources import working_set
 
 class App(QMainWindow):
+    
+    # !     Better Comment
+    # TODO  Better Comment
+    # *     Better Comment
+    # ?     Better Comment
     
     
     def __init__(self):
@@ -133,18 +139,21 @@ class App(QMainWindow):
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
             
-            # TODO : iterate through whole excel,
-            # TODO        if first_date true -> 
-            # TODO            if user_account true -> 
-            # TODO                add tuple to dict using the i as the key
-            # TODO      append dict to destination_worksheet
-            # TODO      Write logic to take into account time period between the first and last date
+            # TODO      convert to date format-> 'dd-mm-yyyy'
+            # ? temp_tuple = (0,0,0,0,0,0,0,0,0) # temp_tuple has as many variables as there will be columns in the dest_workbook, will contain the formulas and defualt values of 0
+            # ? if (first_date <= iteration[0] <= last_date): # ! convert strings to dateformat
+            # ?     if(iter[1]== "EC"):
+            # TODO      grab values, place them in the temp_tuple on the correct positions
+            # TODO      add the temp_tuple to dict
+            # TODO      return the temp_tuple to the defualt form (0,0,0,0,0,0)         
+            # TODO #verify date in the tuple and add it to a list? maybe
             
-            #? if (iteration[0]==first_date):
-            #?     print(iteration[0])
-            #? #verify date in the tuple and add it to a list? maybe
-            
-            #? write the list into the hardcoded new excel location?
+            # ? example dict = {
+            # ?                   (0,0,0,0,0,date,val,val,0),
+            # ?                  (date,val,val,0,0,0,0,0)
+            # ?                  }
+            # TODO    formulas will be present in the temp_tuple
+            # TODO write the dictionary into the hardcoded new excel location?
             pass
 
 
