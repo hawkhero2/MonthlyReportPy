@@ -117,6 +117,7 @@ class App(QMainWindow):
         first_date = self.first_date.text()
         last_date = self.last_date.text()
         user_account = self.user_account.text()
+        sheet_name = first_date+"-"+last_date
         
         desktop = os.path.expanduser("~\Desktop\\") #path for current user desktop
         
@@ -124,7 +125,7 @@ class App(QMainWindow):
         
         destination_workbook = Workbook() #inst destination_workbook
         destination_workbook.save(desktop+full_name+'.xlsx') #create destination_workbook
-        destination_worksheet = destination_workbook.create_sheet()
+        destination_worksheet = destination_workbook.create_sheet(sheet_name)
         
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
@@ -137,8 +138,9 @@ class App(QMainWindow):
             # TODO            if user_account true -> 
             # TODO                add tuple to dict using the i as the key
             # TODO      append dict to destination_worksheet
+            # TODO      Write logic to take into account time period between the first and last date
             
-            #? if (iteration[0]==4):
+            #? if (iteration[0]==first_date):
             #?     print(iteration[0])
             #? #verify date in the tuple and add it to a list? maybe
             
