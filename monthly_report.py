@@ -43,7 +43,7 @@ class App(QMainWindow):
         button.setToolTip('select excel file')
         button.move(20,180)
         button.clicked.connect(self.openFileNameDialog)
-        
+        # TODO Finish styles for UI
         # Qlabel name 
         person_name = QLabel(self)
         person_name.move(20,4)
@@ -145,8 +145,9 @@ class App(QMainWindow):
             # ?     if(iter[1]== "EC"):
             # TODO      grab values, place them in the temp_tuple on the correct positions
             # TODO      add the temp_tuple to dict
-            # TODO      return the temp_tuple to the defualt form (0,0,0,0,0,0)         
-            # TODO #verify date in the tuple and add it to a list? maybe
+            # TODO      temp_tuple = total_columns in destination_worksheet - 
+            # TODO      return the temp_tuple to the defualt form (0,0,0,0,0,0)
+            # TODO      verify date in the tuple and add it to a list? maybe
             
             # ? example dict = {
             # ?                   (0,0,0,0,0,date,val,val,0),
