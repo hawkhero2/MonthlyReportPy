@@ -1,10 +1,9 @@
+from cgi import test
 from distutils.command.build_scripts import first_line_re
 import os
 import datetime
 import sys
-import json
 from unicodedata import name
-import PyQt5
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QWidget, QPushButton, QFileDialog
 from PyQt5.QtGui import QIcon
 from openpyxl import Workbook
@@ -43,20 +42,25 @@ class App(QMainWindow):
         button.setToolTip('select excel file')
         button.move(20,180)
         button.clicked.connect(self.openFileNameDialog)
+        
         # TODO Finish styles for UI
         # Qlabel name 
         person_name = QLabel(self)
         person_name.move(20,4)
         person_name.setText('Full Name')
-        person_name.setStyleSheet("color: #cfcfcf;"
-                                   )
+        person_name.setStyleSheet("""
+                                  color: #cfcfcf;
+                                  
+                                  """)
         
         #Qlabel account name
         user_account = QLabel(self)
         user_account.move(140,4)
         user_account.setText('Account')
-        user_account.setStyleSheet("color: #cfcfcf;"
-                                   )
+        user_account.setStyleSheet("""
+                                   color: #cfcfcf;
+                                   
+                                   """)
         
         # Create textbox full_name
         self.full_name = QLineEdit(self)
@@ -64,6 +68,7 @@ class App(QMainWindow):
         self.full_name.resize(100,20)
         self.full_name.setStyleSheet(""" 
                                      background-color: grey
+                                     
                                      """)
         
         # Create textbox user_account
@@ -88,6 +93,7 @@ class App(QMainWindow):
         first_date.setText('First Date')
         first_date.setStyleSheet("""
                                  color: #cfcfcf;
+                                 
                                  """)
         
         #QLabel last date
@@ -103,22 +109,25 @@ class App(QMainWindow):
         test_button = QPushButton('Test Button', self)
         test_button.move(140,180)
         test_button.clicked.connect(self.testButton)
-        test_button.setStyleSheet("")
+        test_button.setStyleSheet("""
+                                  
+                                  """)
         
         self.show()
     
-    #test_button
+    # * Test Button
     def testButton(self):
-        print(self.full_name.text(),
-              self.first_date.text(),
-              self.last_date.text(),
-              self.user_account.text()
-              )
-    
-    
-    #Open File Dialog Window
-    def openFileNameDialog(self):
+        test_tuple = (1,5,7)
+        empty_list = [0,0,0]
+        i = 0
+        for itm in test_tuple:
+            empty_list[i] = itm
+            i+=1
+        print(empty_list)
         
+    
+    # * Open File Dialog Window Event
+    def openFileNameDialog(self):     
         full_name = self.full_name.text()
         first_date = self.first_date.text()
         last_date = self.last_date.text()
@@ -136,17 +145,21 @@ class App(QMainWindow):
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
         
+        datetime_format = datetime.date
+        
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
             
-            # TODO      convert to date format-> 'dd-mm-yyyy'
-            # ? temp_tuple = (0,0,0,0,0,0,0,0,0) # temp_tuple has as many variables as there will be columns in the dest_workbook, will contain the formulas and defualt values of 0
-            # ? if (first_date <= iteration[0] <= last_date): # ! convert strings to dateformat
+            # !     Important Convert first_date & last_date to date format 'dd-mm-yyyy'
+            
+            # ? temp_list = (0,0,0,0,0,0,0,0,0) + formulas at the end
+            # ? if (first_date <= iteration[0] <= last_date):
             # ?     if(iter[1]== "EC"):
-            # TODO      grab values, place them in the temp_tuple on the correct positions
-            # TODO      add the temp_tuple to dict
-            # TODO      temp_tuple = total_columns in destination_worksheet - 
-            # TODO      return the temp_tuple to the defualt form (0,0,0,0,0,0)
+            # ?         
+            
+            # TODO      grab values, place them in the temp_list on the correct positions
+            # TODO      temp_list = total_columns in destination_worksheet
+            # TODO      return the temp_list to the defualt form (0,0,0,0,0,0)
             # TODO      verify date in the tuple and add it to a list? maybe
             
             # ? example dict = {
