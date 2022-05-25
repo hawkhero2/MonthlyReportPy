@@ -1,4 +1,5 @@
 from cgi import test
+from cgitb import text
 from distutils.command.build_scripts import first_line_re
 import os
 import datetime
@@ -26,12 +27,28 @@ class App(QMainWindow):
         self.top = 100
         self.width = 300
         self.height = 150
-        self.setStyleSheet("background-color:#363636 ")
-        
+        self.setStyleSheet("""
+                           background-color:#363636
+                           """)
         
         self.initUI()
 
     def initUI(self):
+        
+        button_style = """
+                color: #cfcfcf;
+                background-color: #474747;
+        """
+        
+        textbox_style ="""
+                background-color: #474747;
+                color: cfcfcf;
+        """
+        
+        qlabel_style = """
+                color: #cfcfcf;
+        """
+        
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.statusBar().showMessage('Select master excel')
@@ -42,8 +59,40 @@ class App(QMainWindow):
         button.setToolTip('select excel file')
         button.move(20,180)
         button.clicked.connect(self.openFileNameDialog)
+        button.setStyleSheet(button_style)
         
-        # TODO Finish styles for UI
+        # * ----------Textbox----------------------
+        
+        # Create textbox full_name
+        self.full_name = QLineEdit(self)
+        self.full_name.move(20, 35)
+        self.full_name.resize(100,20)
+        self.full_name.setStyleSheet(textbox_style)
+        
+        # Create textbox user_account
+        self.user_account = QLineEdit(self)
+        self.user_account.move(140, 35)
+        self.user_account.resize(100,20)
+        self.user_account.setStyleSheet(textbox_style)
+        
+        
+        # Create textbox first date
+        self.first_date = QLineEdit(self)
+        self.first_date.move(20, 105)
+        self.first_date.resize(100,20)
+        self.first_date.setStyleSheet(textbox_style)
+        
+        
+        # Create textbox last date
+        self.last_date = QLineEdit(self)
+        self.last_date.move(140, 105)
+        self.last_date.resize(100,20)
+        self.last_date.setStyleSheet(textbox_style)
+        
+        
+       
+        # * --------------QLabels----------------
+        
         # Qlabel name 
         person_name = QLabel(self)
         person_name.move(20,4)
@@ -57,55 +106,21 @@ class App(QMainWindow):
         user_account = QLabel(self)
         user_account.move(140,4)
         user_account.setText('Account')
-        user_account.setStyleSheet("""
-                                   color: #cfcfcf;
-                                   
-                                   """)
-        
-        # Create textbox full_name
-        self.full_name = QLineEdit(self)
-        self.full_name.move(20, 30)
-        self.full_name.resize(100,20)
-        self.full_name.setStyleSheet(""" 
-                                     background-color: grey
-                                     
-                                     """)
-        
-        # Create textbox user_account
-        self.user_account = QLineEdit(self)
-        self.user_account.move(140, 30)
-        self.user_account.resize(100,20)
-        
-        # Create textbox first date
-        self.first_date = QLineEdit(self)
-        self.first_date.move(20, 100)
-        self.first_date.resize(100,20)
-        
-        
-        # Create textbox last date
-        self.last_date = QLineEdit(self)
-        self.last_date.move(140, 100)
-        self.last_date.resize(100,20)
+        user_account.setStyleSheet(qlabel_style)
         
         #QLabel first date
         first_date = QLabel(self)
         first_date.move(20, 75)
         first_date.setText('First Date')
-        first_date.setStyleSheet("""
-                                 color: #cfcfcf;
-                                 
-                                 """)
+        first_date.setStyleSheet(qlabel_style)
         
         #QLabel last date
         last_date = QLabel(self)
         last_date.move(140, 75)
         last_date.setText('Last Date')
-        last_date.setStyleSheet("""
-                                color: #cfcfcf;
-                                
-                                """)
+        last_date.setStyleSheet(qlabel_style)
         
-        #Test Button
+        # *   Test Button
         test_button = QPushButton('Test Button', self)
         test_button.move(140,180)
         test_button.clicked.connect(self.testButton)
