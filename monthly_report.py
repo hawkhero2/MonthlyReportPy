@@ -14,10 +14,10 @@ from pkg_resources import working_set
 
 class App(QMainWindow):
     
-    # !     Better Comment
-    # TODO  Better Comment
-    # *     Better Comment
-    # ?     Better Comment
+    # !     Important
+    # TODO  ToDo
+    # *     Note
+    # ?     Logic
     
     
     def __init__(self):
