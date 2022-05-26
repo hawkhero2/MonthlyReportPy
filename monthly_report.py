@@ -1,4 +1,5 @@
 from cgi import test
+from cgitb import text
 from distutils.command.build_scripts import first_line_re
 import os
 import datetime
@@ -21,17 +22,44 @@ class App(QMainWindow):
     
     def __init__(self):
         super().__init__()
-        self.title = 'Python Test App'
-        self.left = 100
+        self.title = 'Monthly Excel Report'
+        self.left : int = 100
         self.top = 100
         self.width = 300
         self.height = 150
-        self.setStyleSheet("background-color:#363636 ")
-        
+        self.setStyleSheet("""
+                           background-color:#363636
+                           """)
         
         self.initUI()
+        
+    def createTextblock(self,obj, int_pos_x, int_pos_y, int_size_x, int_size_y, style):
+        obj.move(int_pos_x,int_pos_y)
+        obj.resize(int_size_x,int_size_y)
+        obj.setStyleSheet(style)
+        
+    def createQLabel(self,obj,name,int_x,int_y, style):
+        obj.move(int_x,int_y)
+        obj.setStyleSheet(style)
+        obj.setText(name)
+    
 
     def initUI(self):
+        
+        button_style = """
+                color: #cfcfcf;
+                background-color: #474747;
+        """
+        
+        textbox_style ="""
+                color: #cfcfcf;
+                background-color: #474747;
+        """
+        
+        qlabel_style = """
+                color: #cfcfcf;
+        """
+        
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
         self.statusBar().showMessage('Select master excel')
@@ -42,78 +70,56 @@ class App(QMainWindow):
         button.setToolTip('select excel file')
         button.move(20,180)
         button.clicked.connect(self.openFileNameDialog)
+        button.setStyleSheet(button_style)
         
-        # TODO Finish styles for UI
+        # * ----------Textbox----------------------
+        
+        # Create textbox 
+        self.full_name = QLineEdit(self)
+        self.user_account = QLineEdit(self)
+        self.first_date = QLineEdit(self)
+        self.last_date = QLineEdit(self)
+        self.createTextblock(self.full_name,20,35,100,20,textbox_style)
+        self.createTextblock(self.user_account,140,35,100,20,textbox_style)
+        self.createTextblock(self.first_date,20,105,100,20,textbox_style)
+        self.createTextblock(self.last_date,140,105,100,20,textbox_style)
+               
+       
+        # * --------------QLabels----------------
+        
         # Qlabel name 
         person_name = QLabel(self)
-        person_name.move(20,4)
-        person_name.setText('Full Name')
-        person_name.setStyleSheet("""
-                                  color: #cfcfcf;
-                                  
-                                  """)
-        
-        #Qlabel account name
         user_account = QLabel(self)
-        user_account.move(140,4)
-        user_account.setText('Account')
-        user_account.setStyleSheet("""
-                                   color: #cfcfcf;
-                                   
-                                   """)
-        
-        # Create textbox full_name
-        self.full_name = QLineEdit(self)
-        self.full_name.move(20, 30)
-        self.full_name.resize(100,20)
-        self.full_name.setStyleSheet(""" 
-                                     background-color: grey
-                                     
-                                     """)
-        
-        # Create textbox user_account
-        self.user_account = QLineEdit(self)
-        self.user_account.move(140, 30)
-        self.user_account.resize(100,20)
-        
-        # Create textbox first date
-        self.first_date = QLineEdit(self)
-        self.first_date.move(20, 100)
-        self.first_date.resize(100,20)
-        
-        
-        # Create textbox last date
-        self.last_date = QLineEdit(self)
-        self.last_date.move(140, 100)
-        self.last_date.resize(100,20)
-        
-        #QLabel first date
         first_date = QLabel(self)
-        first_date.move(20, 75)
-        first_date.setText('First Date')
-        first_date.setStyleSheet("""
-                                 color: #cfcfcf;
-                                 
-                                 """)
-        
-        #QLabel last date
         last_date = QLabel(self)
-        last_date.move(140, 75)
-        last_date.setText('Last Date')
-        last_date.setStyleSheet("""
-                                color: #cfcfcf;
-                                
-                                """)
+        info_zone= QLabel(self)
+        info_zone.setFixedSize(200,140)
         
-        #Test Button
+        # ! Update date format required
+        info_zone_txt= """
+        How to :
+        
+        1. Fill in the fields with the
+        required data 
+        Date format : to be added
+        
+        2. Then select the master excel 
+        and relax
+        """""
+        self.createQLabel(info_zone,info_zone_txt,250,4,qlabel_style)
+        self.createQLabel(person_name,'Full Name',20,4,qlabel_style)
+        self.createQLabel(user_account,'Account',140,4,qlabel_style)
+        self.createQLabel(first_date,'First Date',20,75,qlabel_style)
+        self.createQLabel(last_date,'Last Date',140,75,qlabel_style)
+                
+        # *   Test Button
         test_button = QPushButton('Test Button', self)
         test_button.move(140,180)
         test_button.clicked.connect(self.testButton)
-        test_button.setStyleSheet("""
-                                  
-                                  """)
+        test_button.setStyleSheet(button_style)
         
         self.show()
+    
     
     # * Test Button
     def testButton(self):
