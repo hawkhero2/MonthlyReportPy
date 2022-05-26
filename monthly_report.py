@@ -151,7 +151,8 @@ class App(QMainWindow):
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
         
-        datetime_format = datetime.date
+        # ? might not work properly
+        datetime_format = datetime.date.__format__(self.first_date.text(), self.last_date.text())   
         
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
@@ -168,10 +169,6 @@ class App(QMainWindow):
             # TODO      return the temp_list to the defualt form (0,0,0,0,0,0)
             # TODO      verify date in the tuple and add it to a list? maybe
             
-            # ? example dict = {
-            # ?                   (0,0,0,0,0,date,val,val,0),
-            # ?                  (date,val,val,0,0,0,0,0)
-            # ?                  }
             # TODO    formulas will be present in the temp_tuple
             # TODO write the dictionary into the hardcoded new excel location?
             pass
