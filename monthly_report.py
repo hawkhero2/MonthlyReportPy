@@ -2,7 +2,7 @@ from cgi import test
 from cgitb import text
 from distutils.command.build_scripts import first_line_re
 import os
-import datetime
+from datetime import datetime
 import sys
 from unicodedata import name
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QWidget, QPushButton, QFileDialog
@@ -123,22 +123,17 @@ class App(QMainWindow):
     
     # * Test Button
     def testButton(self):
-        test_tuple = (1,5,7)
-        empty_list = [0,0,0]
-        i = 0
-        for itm in test_tuple:
-            empty_list[i] = itm
-            i+=1
-        print(empty_list)
+        pass
+        
         
     
     # * Open File Dialog Window Event
     def openFileNameDialog(self):     
         full_name = self.full_name.text()
-        first_date = self.first_date.text()
-        last_date = self.last_date.text()
+        first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
+        last_date_obj = datetime.strptime(self.last_date.text(),'%d/%m/%Y')
         user_account = self.user_account.text()
-        sheet_name = first_date+"-"+last_date
+        sheet_name = self.first_date.text()+"-"+self.last_date.text()
         
         desktop = os.path.expanduser("~\Desktop\\") #path for current user desktop
         
@@ -151,28 +146,19 @@ class App(QMainWindow):
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
         
-        # ? might not work properly
-        datetime_format = datetime.date.__format__(self.first_date.text(), self.last_date.text())   
-        
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
-        for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
+        #? for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
+        #?    temp_list = (0,0,0,0,0,0,0,0,0)
+        #?    if (first_date_obj <= iteration[0] <= last_date_obj):
+        #?         if(iter[1]== "EC"):
+                    
             
-            # !     Important Convert first_date & last_date to date format 'dd-mm-yyyy'
-            
-            # ? temp_list = (0,0,0,0,0,0,0,0,0) + formulas at the end
-            # ? if (first_date <= iteration[0] <= last_date):
-            # ?     if(iter[1]== "EC"):
-            # ?         
-            
-            # TODO      grab values, place them in the temp_list on the correct positions
-            # TODO      temp_list = total_columns in destination_worksheet
-            # TODO      return the temp_list to the defualt form (0,0,0,0,0,0)
-            # TODO      verify date in the tuple and add it to a list? maybe
-            
-            # TODO    formulas will be present in the temp_tuple
-            # TODO write the dictionary into the hardcoded new excel location?
-            pass
-
+        # TODO      grab values, place them in the temp_list on the correct positions
+        # TODO      temp_list = total_columns in destination_worksheet
+        # TODO      return the temp_list to the defualt form (0,0,0,0,0,0)
+        # TODO      verify date in the tuple and add it to a list? maybe
+        # TODO    formulas will be present in the temp_list
+        pass
 
 
 if __name__ == '__main__':
