@@ -4,6 +4,7 @@ from distutils.command.build_scripts import first_line_re
 import os
 from datetime import datetime
 import sys
+from time import time_ns
 from unicodedata import name
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QWidget, QPushButton, QFileDialog
 from PyQt5.QtGui import QIcon
@@ -95,13 +96,12 @@ class App(QMainWindow):
         info_zone= QLabel(self)
         info_zone.setFixedSize(200,140)
         
-        # ! Update date format required
         info_zone_txt= """
         How to :
         
         1. Fill in the fields with the
         required data 
-        Date format : to be added
+        Date format : 24/05/2022
         
         2. Then select the master excel 
         and relax
@@ -123,17 +123,54 @@ class App(QMainWindow):
     
     # * Test Button
     def testButton(self):
-        pass
+        test_wb = Workbook()
+        test_wb = load_workbook(filename="test.xlsx")
+        test_ws = test_wb.active
+        temp_l = [0]*23
+        row_nr = "1"
+        row_nr2 = "2"
+        temp_l.insert(21,"=SUM(A"+row_nr+":A"+row_nr2+")")
+        test_ws.append(temp_l)
+        test_ws.append({'G':'=SUM(A1:A2)'})
+        print(temp_l)
+        test_wb.save('test.xlsx')
         
+        # temporary_list = ["date","activity","docs","time","speed",2,80,20,["inside","the","list"]] # cannot append list nesting lists
+        # test_wb.create_sheet(title='test')
+        # test_ws=test_wb["Sheet1"]
+        # i=0
+        # while (i<len(temporary_list)):
+        #     test_ws.append(temporary_list)
+        #     i+=1
         
-    
     # * Open File Dialog Window Event
     def openFileNameDialog(self):     
+        
         full_name = self.full_name.text()
         first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
         last_date_obj = datetime.strptime(self.last_date.text(),'%d/%m/%Y')
         user_account = self.user_account.text()
         sheet_name = self.first_date.text()+"-"+self.last_date.text()
+        
+        excel_header = [
+            "DATE",
+            "EC DOCS",
+            "IC DOCS",
+            "GC DOCS",
+            "EC TIME",
+            "IC TIME",
+            "GC TIME",
+            "EXTRA TIME",
+            "EC SPEED",
+            "IC SPEED",
+            "GC SPEED",
+            "TOTAL TIME",
+            "WORKED",
+            "MINUTES",
+            "MONTHLY EC SPEED",
+            "MONTHLY IC SPEED",
+            "MONTHLY GC SPEED",
+        ]
         
         desktop = os.path.expanduser("~\Desktop\\") #path for current user desktop
         
@@ -141,24 +178,43 @@ class App(QMainWindow):
         
         destination_workbook = Workbook() #inst destination_workbook
         destination_workbook.save(desktop+full_name+'.xlsx') #create destination_workbook
-        destination_worksheet = destination_workbook.create_sheet(sheet_name)
+        destination_workbook.create_sheet(sheet_name)
+        destination_worksheet = destination_workbook[sheet_name]
+        
+        destination_worksheet.append(excel_header)
         
         master_workbook = Workbook()
         master_workbook = load_workbook(fileName) #load_workbook from fileName
-        
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
-        #? for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
-        #?    temp_list = (0,0,0,0,0,0,0,0,0)
-        #?    if (first_date_obj <= iteration[0] <= last_date_obj):
-        #?         if(iter[1]== "EC"):
-                    
-            
-        # TODO      grab values, place them in the temp_list on the correct positions
-        # TODO      temp_list = total_columns in destination_worksheet
-        # TODO      return the temp_list to the defualt form (0,0,0,0,0,0)
-        # TODO      verify date in the tuple and add it to a list? maybe
-        # TODO    formulas will be present in the temp_list
-        pass
+        i=2
+        for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
+            temp_list = [0]*17
+            if ((first_date_obj <= iteration[0] <= last_date_obj)& (iteration[3] == user_account)):
+                temp_list[0] = iteration[0] # write date
+                docs = iteration[4]
+                time = iteration[5]
+                extra_time = iteration[7]
+                if(iteration[1]== "Expertise"):
+                    temp_list[1] = docs
+                    temp_list[4] = time
+                    temp_list[7] = extra_time
+                    temp_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
+                    temp_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
+                    temp_list[12] = 8 #WORKED
+                    temp_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
+                    destination_worksheet.append(temp_list)
+                    i+=1
+                if(iteration[1]== "IC"):
+                    temp_list[2] = docs
+                    temp_list[5] = time
+                    temp_list[7] = extra_time
+                    temp_list[9] = "=IFERROR(C"+i+"/F"+i+",0)"
+# TODO  grab values, place them in the temp_list on the correct positions
+# TODO  temp_list = total_columns in destination_worksheet
+# TODO  return the temp_list to the defualt form (0,0,0,0,0,0)
+# TODO  verify date in the tuple and add it to a list? maybe
+# TODO  formulas will be present in the temp_list
+# TODO  destination_workbook.save(desktop+full_name+'.xlsx')
 
 
 if __name__ == '__main__':
