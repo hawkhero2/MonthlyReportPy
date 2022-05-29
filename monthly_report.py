@@ -10,8 +10,6 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QLineEdit, QWidge
 from PyQt5.QtGui import QIcon
 from openpyxl import Workbook
 from openpyxl import load_workbook
-from openpyxl.utils import get_column_letter
-from pkg_resources import working_set
 
 class App(QMainWindow):
     
@@ -75,7 +73,7 @@ class App(QMainWindow):
         
         # * ----------Textbox----------------------
         
-        # Create textbox 
+        # Textboxes
         self.full_name = QLineEdit(self)
         self.user_account = QLineEdit(self)
         self.first_date = QLineEdit(self)
@@ -153,23 +151,23 @@ class App(QMainWindow):
         sheet_name = self.first_date.text()+"-"+self.last_date.text()
         
         excel_header = [
-            "DATE",
-            "EC DOCS",
-            "IC DOCS",
-            "GC DOCS",
-            "EC TIME",
-            "IC TIME",
-            "GC TIME",
-            "EXTRA TIME",
-            "EC SPEED",
-            "IC SPEED",
-            "GC SPEED",
-            "TOTAL TIME",
-            "WORKED",
-            "MINUTES",
-            "MONTHLY EC SPEED",
-            "MONTHLY IC SPEED",
-            "MONTHLY GC SPEED",
+            "DATE",#0 #A
+            "EC DOCS",#1 #B
+            "IC DOCS",#2 #C
+            "GC DOCS",#3 #D
+            "EC TIME",#4 #E
+            "IC TIME",#5 #F
+            "GC TIME",#6 #G
+            "EXTRA TIME",#7 #H
+            "EC SPEED",#8 #I
+            "IC SPEED",#9 #J
+            "GC SPEED",#10 #K
+            "TOTAL TIME",#11 #L
+            "WORKED",#12 #M
+            "MINUTES",#13 #N
+            "MONTHLY EC SPEED",#14 #O
+            "MONTHLY IC SPEED",#15 #P
+            "MONTHLY GC SPEED",#16 #Q
         ]
         
         desktop = os.path.expanduser("~\Desktop\\") #path for current user desktop
@@ -189,32 +187,43 @@ class App(QMainWindow):
         i=2
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
             temp_list = [0]*17
-            if ((first_date_obj <= iteration[0] <= last_date_obj)& (iteration[3] == user_account)):
+            if ((first_date_obj <= iteration[0] <= last_date_obj) & (iteration[3] == user_account)):
                 temp_list[0] = iteration[0] # write date
                 docs = iteration[4]
                 time = iteration[5]
                 extra_time = iteration[7]
+                temp_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
+                temp_list[9] = "=IFERROR(C"+i+"/F"+i+",0)" #IC SPEED
+                temp_list[10] = "=IFERROR(D"+i+"/G"+i+",0)" #GC SPEED
+                temp_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
+                temp_list[12] = 8 #WORKED
+                temp_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
+                temp_list[14] = "=SUM(B2:B"+i+")/SUM(E:E)"
+                temp_list[15] = "=SUM(C2:C)/SUM(F:F)"
+                temp_list[16] = "=SUM(D2:D)/SUM(G:G)"
                 if(iteration[1]== "Expertise"):
                     temp_list[1] = docs
                     temp_list[4] = time
                     temp_list[7] = extra_time
-                    temp_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
-                    temp_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
-                    temp_list[12] = 8 #WORKED
-                    temp_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
                     destination_worksheet.append(temp_list)
                     i+=1
                 if(iteration[1]== "IC"):
                     temp_list[2] = docs
                     temp_list[5] = time
                     temp_list[7] = extra_time
-                    temp_list[9] = "=IFERROR(C"+i+"/F"+i+",0)"
-# TODO  grab values, place them in the temp_list on the correct positions
-# TODO  temp_list = total_columns in destination_worksheet
-# TODO  return the temp_list to the defualt form (0,0,0,0,0,0)
-# TODO  verify date in the tuple and add it to a list? maybe
-# TODO  formulas will be present in the temp_list
-# TODO  destination_workbook.save(desktop+full_name+'.xlsx')
+                    destination_worksheet.append(temp_list)
+                    i+=1
+                if(iteration[1]== "GC"):
+                    temp_list[3] = docs
+                    temp_list[6] = time
+                    temp_list[7] = extra_time
+                    destination_worksheet.append(temp_list)
+                    i+=1
+        destination_worksheet.append({
+            "N":"=SUM(N2:N"+i+")"
+            })
+        destination_workbook.save(desktop+full_name+'.xlsx')
+        master_workbook.close()
 
 
 if __name__ == '__main__':
