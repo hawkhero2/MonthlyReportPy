@@ -121,17 +121,20 @@ class App(QMainWindow):
     
     # * Test Button
     def testButton(self):
-        test_wb = Workbook()
-        test_wb = load_workbook(filename="test.xlsx")
-        test_ws = test_wb.active
-        temp_l = [0]*23
-        row_nr = "1"
-        row_nr2 = "2"
-        temp_l.insert(21,"=SUM(A"+row_nr+":A"+row_nr2+")")
-        test_ws.append(temp_l)
-        test_ws.append({'G':'=SUM(A1:A2)'})
-        print(temp_l)
-        test_wb.save('test.xlsx')
+        first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
+        print(first_date_obj)
+        print(type(first_date_obj))
+        # test_wb = Workbook()
+        # test_wb = load_workbook(filename="test.xlsx")
+        # test_ws = test_wb.active
+        # temp_l = [0]*23
+        # row_nr = "1"
+        # row_nr2 = "2"
+        # temp_l.insert(21,"=SUM(A"+row_nr+":A"+row_nr2+")")
+        # test_ws.append(temp_l)
+        # test_ws.append({'G':'=SUM(A1:A2)'})
+        # print(temp_l)
+        # test_wb.save('test.xlsx')
         
         # temporary_list = ["date","activity","docs","time","speed",2,80,20,["inside","the","list"]] # cannot append list nesting lists
         # test_wb.create_sheet(title='test')
@@ -148,7 +151,7 @@ class App(QMainWindow):
         first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
         last_date_obj = datetime.strptime(self.last_date.text(),'%d/%m/%Y')
         user_account = self.user_account.text()
-        sheet_name = self.first_date.text()+"-"+self.last_date.text()
+        sheet_name = str(first_date_obj.month)
         
         excel_header = [
             "DATE",#0 #A
@@ -187,7 +190,8 @@ class App(QMainWindow):
         i=2
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
             values_list = [0]*17
-            if ((first_date_obj <= iteration[0] <= last_date_obj) & (iteration[3] == user_account)):
+            excel_date = datetime.strptime(str(iteration[0]) ,'%d/%m/%Y')
+            if ((first_date_obj <= excel_date <= last_date_obj) & (iteration[3] == user_account)):
                 values_list[0] = iteration[0] # write date
                 docs = iteration[4]
                 time = iteration[5]
@@ -201,7 +205,7 @@ class App(QMainWindow):
                 values_list[14] = "=SUM(B2:B"+i+")/SUM(E2:E"+i+")" #MONTHLY EC SPEED
                 values_list[15] = "=SUM(C2:C"+i+")/SUM(F2:F"+i+")" #MONTHLY IC SPEED
                 values_list[16] = "=SUM(D2:D"+i+")/SUM(G2:G"+i+")" #MONTHLY GC SPEED
-                if(iteration[1]== "Expertise"):
+                if(iteration[1]== "EC"):
                     values_list[1] = docs
                     values_list[4] = time
                     values_list[7] = extra_time
