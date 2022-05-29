@@ -198,9 +198,9 @@ class App(QMainWindow):
                 temp_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
                 temp_list[12] = 8 #WORKED
                 temp_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
-                temp_list[14] = "=SUM(B2:B"+i+")/SUM(E:E)"
-                temp_list[15] = "=SUM(C2:C)/SUM(F:F)"
-                temp_list[16] = "=SUM(D2:D)/SUM(G:G)"
+                temp_list[14] = "=SUM(B2:B"+i+")/SUM(E2:E"+i+")" #MONTHLY EC SPEED
+                temp_list[15] = "=SUM(C2:C"+i+")/SUM(F2:F"+i+")" #MONTHLY IC SPEED
+                temp_list[16] = "=SUM(D2:D"+i+")/SUM(G2:G"+i+")" #MONTHLY GC SPEED
                 if(iteration[1]== "Expertise"):
                     temp_list[1] = docs
                     temp_list[4] = time
@@ -222,6 +222,7 @@ class App(QMainWindow):
         destination_worksheet.append({
             "N":"=SUM(N2:N"+i+")"
             })
+        
         destination_workbook.save(desktop+full_name+'.xlsx')
         master_workbook.close()
 
