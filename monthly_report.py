@@ -186,38 +186,38 @@ class App(QMainWindow):
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         i=2
         for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
-            temp_list = [0]*17
+            values_list = [0]*17
             if ((first_date_obj <= iteration[0] <= last_date_obj) & (iteration[3] == user_account)):
-                temp_list[0] = iteration[0] # write date
+                values_list[0] = iteration[0] # write date
                 docs = iteration[4]
                 time = iteration[5]
                 extra_time = iteration[7]
-                temp_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
-                temp_list[9] = "=IFERROR(C"+i+"/F"+i+",0)" #IC SPEED
-                temp_list[10] = "=IFERROR(D"+i+"/G"+i+",0)" #GC SPEED
-                temp_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
-                temp_list[12] = 8 #WORKED
-                temp_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
-                temp_list[14] = "=SUM(B2:B"+i+")/SUM(E2:E"+i+")" #MONTHLY EC SPEED
-                temp_list[15] = "=SUM(C2:C"+i+")/SUM(F2:F"+i+")" #MONTHLY IC SPEED
-                temp_list[16] = "=SUM(D2:D"+i+")/SUM(G2:G"+i+")" #MONTHLY GC SPEED
+                values_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
+                values_list[9] = "=IFERROR(C"+i+"/F"+i+",0)" #IC SPEED
+                values_list[10] = "=IFERROR(D"+i+"/G"+i+",0)" #GC SPEED
+                values_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
+                values_list[12] = 8 #WORKED
+                values_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
+                values_list[14] = "=SUM(B2:B"+i+")/SUM(E2:E"+i+")" #MONTHLY EC SPEED
+                values_list[15] = "=SUM(C2:C"+i+")/SUM(F2:F"+i+")" #MONTHLY IC SPEED
+                values_list[16] = "=SUM(D2:D"+i+")/SUM(G2:G"+i+")" #MONTHLY GC SPEED
                 if(iteration[1]== "Expertise"):
-                    temp_list[1] = docs
-                    temp_list[4] = time
-                    temp_list[7] = extra_time
-                    destination_worksheet.append(temp_list)
+                    values_list[1] = docs
+                    values_list[4] = time
+                    values_list[7] = extra_time
+                    destination_worksheet.append(values_list)
                     i+=1
                 if(iteration[1]== "IC"):
-                    temp_list[2] = docs
-                    temp_list[5] = time
-                    temp_list[7] = extra_time
-                    destination_worksheet.append(temp_list)
+                    values_list[2] = docs
+                    values_list[5] = time
+                    values_list[7] = extra_time
+                    destination_worksheet.append(values_list)
                     i+=1
                 if(iteration[1]== "GC"):
-                    temp_list[3] = docs
-                    temp_list[6] = time
-                    temp_list[7] = extra_time
-                    destination_worksheet.append(temp_list)
+                    values_list[3] = docs
+                    values_list[6] = time
+                    values_list[7] = extra_time
+                    destination_worksheet.append(values_list)
                     i+=1
         destination_worksheet.append({
             "N":"=SUM(N2:N"+i+")"
