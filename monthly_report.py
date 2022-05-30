@@ -110,19 +110,19 @@ class App(QMainWindow):
         self.createQLabel(last_date,'Last Date',140,75,qlabel_style)
                 
         # *   Test Button
-        test_button = QPushButton('Test Button', self)
-        test_button.move(140,180)
-        test_button.clicked.connect(self.testButton)
-        test_button.setStyleSheet(button_style)
+        # test_button = QPushButton('Test Button', self)
+        # test_button.move(140,180)
+        # test_button.clicked.connect(self.testButton)
+        # test_button.setStyleSheet(button_style)
         
         self.show()
     
     
     # * Test Button
-    def testButton(self):
-        first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
-        print(first_date_obj)
-        print(type(first_date_obj))
+    # def testButton(self):
+    #     first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
+    #     print(first_date_obj)
+    #     print(type(first_date_obj))
 
         
     # * Open File Dialog Window Event
@@ -218,6 +218,7 @@ class App(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon('icon.png'))
     app.setStyle('Fusion')
     ex = App()
     sys.exit(app.exec_())
