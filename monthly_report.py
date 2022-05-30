@@ -99,7 +99,7 @@ class App(QMainWindow):
         
         1. Fill in the fields with the
         required data 
-        Date format : 24/05/2022
+        Date format : 24.05.2022
         
         2. Then select the master excel 
         and relax
@@ -124,34 +124,16 @@ class App(QMainWindow):
         first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
         print(first_date_obj)
         print(type(first_date_obj))
-        # test_wb = Workbook()
-        # test_wb = load_workbook(filename="test.xlsx")
-        # test_ws = test_wb.active
-        # temp_l = [0]*23
-        # row_nr = "1"
-        # row_nr2 = "2"
-        # temp_l.insert(21,"=SUM(A"+row_nr+":A"+row_nr2+")")
-        # test_ws.append(temp_l)
-        # test_ws.append({'G':'=SUM(A1:A2)'})
-        # print(temp_l)
-        # test_wb.save('test.xlsx')
-        
-        # temporary_list = ["date","activity","docs","time","speed",2,80,20,["inside","the","list"]] # cannot append list nesting lists
-        # test_wb.create_sheet(title='test')
-        # test_ws=test_wb["Sheet1"]
-        # i=0
-        # while (i<len(temporary_list)):
-        #     test_ws.append(temporary_list)
-        #     i+=1
+
         
     # * Open File Dialog Window Event
     def openFileNameDialog(self):     
         
         full_name = self.full_name.text()
-        first_date_obj = datetime.strptime(self.first_date.text(),'%d/%m/%Y')
-        last_date_obj = datetime.strptime(self.last_date.text(),'%d/%m/%Y')
+        first_date_obj = datetime.strptime(self.first_date.text(),'%d.%m.%Y')
+        last_date_obj = datetime.strptime(self.last_date.text(),'%d.%m.%Y')
         user_account = self.user_account.text()
-        sheet_name = str(first_date_obj.month)
+        sheet_name = str(self.first_date.text())+"-"+str(self.last_date.text())
         
         excel_header = [
             "DATE",#0 #A
@@ -179,7 +161,7 @@ class App(QMainWindow):
         
         destination_workbook = Workbook() #inst destination_workbook
         destination_workbook.save(desktop+full_name+'.xlsx') #create destination_workbook
-        destination_workbook.create_sheet(sheet_name)
+        destination_workbook.create_sheet(sheet_name,0)
         destination_worksheet = destination_workbook[sheet_name]
         
         destination_worksheet.append(excel_header)
@@ -188,23 +170,23 @@ class App(QMainWindow):
         master_workbook = load_workbook(fileName) #load_workbook from fileName
         master_worksheet = master_workbook.active #grabs active worksheet from master_workbook
         i=2
-        for iteration in master_worksheet.iter_rows( values_only=True): #returns a tuple
-            values_list = [0]*17
+        for iteration in master_worksheet.iter_rows(min_row=2, values_only=True): #returns a tuple
+            values_list = [0]*14
             excel_date = datetime.strptime(str(iteration[0]) ,'%d/%m/%Y')
             if ((first_date_obj <= excel_date <= last_date_obj) & (iteration[3] == user_account)):
                 values_list[0] = iteration[0] # write date
                 docs = iteration[4]
                 time = iteration[5]
                 extra_time = iteration[7]
-                values_list[8] = "=IFERROR(B"+i+"/E"+i+",0)" #EC SPEED
-                values_list[9] = "=IFERROR(C"+i+"/F"+i+",0)" #IC SPEED
-                values_list[10] = "=IFERROR(D"+i+"/G"+i+",0)" #GC SPEED
-                values_list[11] = "=SUM(E"+i+"F"+i+"G"+i+"H"+i+")" #TOTAL TIME
+                values_list[8] = "=IFERROR(B"+str(i)+"/E"+str(i)+",0)" #EC SPEED
+                values_list[9] = "=IFERROR(C"+str(i)+"/F"+str(i)+",0)" #IC SPEED
+                values_list[10] = "=IFERROR(D"+str(i)+"/G"+str(i)+",0)" #GC SPEED
+                values_list[11] = "=SUM(E"+str(i)+"+""F"+str(i)+"+""G"+str(i)+"+""H"+str(i)+")" #TOTAL TIME
                 values_list[12] = 8 #WORKED
-                values_list[13] = "=(L"+i+"-M"+i+")" #MINUTES
-                values_list[14] = "=SUM(B2:B"+i+")/SUM(E2:E"+i+")" #MONTHLY EC SPEED
-                values_list[15] = "=SUM(C2:C"+i+")/SUM(F2:F"+i+")" #MONTHLY IC SPEED
-                values_list[16] = "=SUM(D2:D"+i+")/SUM(G2:G"+i+")" #MONTHLY GC SPEED
+                values_list[13] = "=(L"+str(i)+"-M"+str(i)+")" #MINUTES
+                # values_list[14] = "=SUM(B2:B"+str(i)+")/SUM(E2:E"+str(i)+")" #MONTHLY EC SPEED
+                # values_list[15] = "=SUM(C2:C"+str(i)+")/SUM(F2:F"+str(i)+")" #MONTHLY IC SPEED
+                # values_list[16] = "=SUM(D2:D"+str(i)+")/SUM(G2:G"+str(i)+")" #MONTHLY GC SPEED
                 if(iteration[1]== "EC"):
                     values_list[1] = docs
                     values_list[4] = time
@@ -224,10 +206,22 @@ class App(QMainWindow):
                     destination_worksheet.append(values_list)
                     i+=1
         destination_worksheet.append({
-            "N":"=SUM(N2:N"+i+")"
+            "N":"=SUM(N2:N"+str(i-1)+")"
             })
-        
+        destination_worksheet.append({
+            "O":"=SUM(B:B)/SUM(E:E)",
+            "P":"=SUM(C:C)/SUM(F:F)",
+            "Q":"=SUM(D:D)/SUM(G:G)"
+            }) #MONTHLY EC SPEED MONTHLY IC SPEED MONTHLY GC SPEED
+        # destination_worksheet.append({
+        #     "P":"=SUM(C:C)/SUM(F:F)"
+        #     }) #MONTHLY IC SPEED
+        # destination_worksheet.append({
+        #     "Q":"=SUM(D:D)/SUM(G:G)"
+        #     })  #MONTHLY GC SPEED
         destination_workbook.save(desktop+full_name+'.xlsx')
+        self.statusBar().showMessage("File Saved")
+        
         master_workbook.close()
 
 
