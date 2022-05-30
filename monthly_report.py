@@ -172,7 +172,7 @@ class App(QMainWindow):
         for iteration in master_worksheet.iter_rows(min_row=2, values_only=True): #returns a tuple
             values_list = [0]*14
             excel_date = datetime.strptime(str(iteration[0]) ,'%d/%m/%Y')
-            if ((first_date_obj <= excel_date <= last_date_obj) & (iteration[3] == user_account)):
+            if ((first_date_obj <= excel_date <= last_date_obj) & (iteration[2] == user_account)):
                 values_list[0] = iteration[0] # write date
                 docs = iteration[4]
                 time = iteration[5]
