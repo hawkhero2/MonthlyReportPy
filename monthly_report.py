@@ -29,7 +29,7 @@ class App(QMainWindow):
         self.setStyleSheet("""
                            background-color:#363636
                            """)
-        
+        self.setWindowIcon(QIcon('icon.png'))
         self.initUI()
         
     def createTextblock(self,obj, int_pos_x, int_pos_y, int_size_x, int_size_y, style):
@@ -218,7 +218,6 @@ class App(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    app.setWindowIcon(QIcon('icon.png'))
     app.setStyle('Fusion')
     ex = App()
     sys.exit(app.exec_())
