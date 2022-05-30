@@ -81,8 +81,7 @@ class App(QMainWindow):
         self.createTextblock(self.full_name,20,35,100,20,textbox_style)
         self.createTextblock(self.user_account,140,35,100,20,textbox_style)
         self.createTextblock(self.first_date,20,105,100,20,textbox_style)
-        self.createTextblock(self.last_date,140,105,100,20,textbox_style)
-               
+        self.createTextblock(self.last_date,140,105,100,20,textbox_style)               
        
         # * --------------QLabels----------------
         
@@ -184,9 +183,6 @@ class App(QMainWindow):
                 values_list[11] = "=SUM(E"+str(i)+"+""F"+str(i)+"+""G"+str(i)+"+""H"+str(i)+")" #TOTAL TIME
                 values_list[12] = 8 #WORKED
                 values_list[13] = "=(L"+str(i)+"-M"+str(i)+")" #MINUTES
-                # values_list[14] = "=SUM(B2:B"+str(i)+")/SUM(E2:E"+str(i)+")" #MONTHLY EC SPEED
-                # values_list[15] = "=SUM(C2:C"+str(i)+")/SUM(F2:F"+str(i)+")" #MONTHLY IC SPEED
-                # values_list[16] = "=SUM(D2:D"+str(i)+")/SUM(G2:G"+str(i)+")" #MONTHLY GC SPEED
                 if(iteration[1]== "EC"):
                     values_list[1] = docs
                     values_list[4] = time
@@ -213,12 +209,7 @@ class App(QMainWindow):
             "P":"=SUM(C:C)/SUM(F:F)",
             "Q":"=SUM(D:D)/SUM(G:G)"
             }) #MONTHLY EC SPEED MONTHLY IC SPEED MONTHLY GC SPEED
-        # destination_worksheet.append({
-        #     "P":"=SUM(C:C)/SUM(F:F)"
-        #     }) #MONTHLY IC SPEED
-        # destination_worksheet.append({
-        #     "Q":"=SUM(D:D)/SUM(G:G)"
-        #     })  #MONTHLY GC SPEED
+
         destination_workbook.save(desktop+full_name+'.xlsx')
         self.statusBar().showMessage("File Saved")
         
